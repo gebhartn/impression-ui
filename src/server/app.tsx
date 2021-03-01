@@ -7,6 +7,11 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
+// Need this since we fudged the bundle size limit in webpack
+const handleChunks = (assets: any) => {
+    return `<script src='/public${assets.client.js}' defer></script>`;
+};
+
 const makeApp = () => {
     try {
         const html = `
@@ -29,6 +34,7 @@ const makeApp = () => {
     </head>
     <body>
         <div id="impression-ui"></div>
+        ${handleChunks(assets)}
     </body>
 </html>
 `;

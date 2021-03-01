@@ -8,6 +8,7 @@ import { Store, IStore, Provider } from './store';
 declare const module: NodeModule;
 
 const store: IStore = Store.create({});
+console.log('hello');
 
 const doHydrate = () => {
     const method = module.hot ? render : hydrate;
