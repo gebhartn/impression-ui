@@ -1,9 +1,4 @@
-import * as React from 'react';
 import { Request, Response } from 'express';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-
-import { App } from '../client/pages';
 
 let assets: any;
 
@@ -12,13 +7,7 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-const makeApp = (req: Request) => {
-    const context = {};
-    const markup = renderToString(
-        <StaticRouter context={context} location={req.url}>
-            <App />
-        </StaticRouter>,
-    );
+const makeApp = () => {
     try {
         const html = `
 <!doctype html>
@@ -31,11 +20,7 @@ const makeApp = (req: Request) => {
         <link rel='icon' type='image/png' href='/public/images/favicon-16x16.png' sizes='16x16'>
         <title>Impression</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        ${
-            assets.client.css
-                ? `<link rel="stylesheet" href="${assets.client.css}">`
-                : ''
-        }
+        ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
           ${
               process.env.NODE_ENV === 'production'
                   ? `<script src="${assets.client.js}" defer></script>`
@@ -43,7 +28,7 @@ const makeApp = (req: Request) => {
           }
     </head>
     <body>
-        <div id="impression-ui">${markup}</div>
+        <div id="impression-ui"></div>
     </body>
 </html>
 `;
@@ -55,7 +40,7 @@ const makeApp = (req: Request) => {
     return false;
 };
 
-export const app = (req: Request, res: Response) => {
-    const shell = makeApp(req);
+export const app = (_req: Request, res: Response) => {
+    const shell = makeApp();
     res.send(shell);
 };
