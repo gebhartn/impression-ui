@@ -1,3 +1,4 @@
 import React from 'react';
+import { Landing } from './Landing';
 
-export const App = () => <div>Hello, world!</div>;
+export const App = () => <Landing />;
