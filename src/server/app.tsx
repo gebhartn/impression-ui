@@ -12,20 +12,23 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-export const app = (req: Request, res: Response) => {
+const makeApp = (req: Request) => {
     const context = {};
     const markup = renderToString(
         <StaticRouter context={context} location={req.url}>
             <App />
         </StaticRouter>,
     );
-
-    const html = `
+    try {
+        const html = `
 <!doctype html>
-    <html lang="">
+    <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charSet='utf-8' />
+        <meta charset='utf-8' />
+        <meta name='theme-color' content='#ffffff'>
+        <link rel='icon' type='image/png' href='/public/images/favicon-32x32.png' sizes='32x32'>
+        <link rel='icon' type='image/png' href='/public/images/favicon-16x16.png' sizes='16x16'>
         <title>Impression</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${
@@ -44,5 +47,15 @@ export const app = (req: Request, res: Response) => {
     </body>
 </html>
 `;
-    res.send(html);
+        return html;
+    } catch (e) {
+        console.error(e);
+    }
+
+    return false;
+};
+
+export const app = (req: Request, res: Response) => {
+    const shell = makeApp(req);
+    res.send(shell);
 };

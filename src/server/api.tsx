@@ -1,7 +1,9 @@
 import { Router, Request, Response } from 'express';
 
-export const api = Router();
+const router = Router();
 
-api.use('/', (_req: Request, res: Response) => {
+router.use('/', (_req: Request, res: Response) => {
     res.send('Hello from the API');
 });
+
+export const api = router;

@@ -1,16 +1,28 @@
 import React from 'react';
-import { hydrate } from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { App } from './pages';
+import { Store, IStore, Provider } from './store';
 
-hydrate(
-    <Router>
-        <App />
-    </Router>,
-    document.getElementById('impression-ui'),
-);
+declare const module: NodeModule;
+
+const store: IStore = Store.create({});
+
+const doHydrate = () => {
+    const method = module.hot ? render : hydrate;
+    method(
+        <Provider value={store}>
+            <Router>
+                <App />
+            </Router>
+        </Provider>,
+        document.getElementById('impression-ui'),
+    );
+};
+
+doHydrate();
 
 if (module.hot) {
-    module.hot.accept();
+    module.hot.accept('./pages', () => doHydrate());
 }
