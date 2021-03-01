@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { useStore, IStore } from '../store';
+import { useStore } from '../store';
 import { Landing } from './Landing';
+import { makeHandleChange, makeHandleSubmit } from './helpers';
 
 export const App = observer(() => {
     const store = useStore();
